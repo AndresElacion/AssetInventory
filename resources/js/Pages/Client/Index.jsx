@@ -2,7 +2,6 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Link, router } from "@inertiajs/react";
 import React, { useState } from "react";
 
-
 export default function Index({ success, clients }) {
     const [openIndex, setOpenIndex] = useState(null); // State to track the open accordion index
 
@@ -12,82 +11,111 @@ export default function Index({ success, clients }) {
 
     const deleteClient = (client) => {
         if (!window.confirm('Are you sure you want to delete the client?')) {
-            return
+            return;
         }
-
-        router.delete(route('client.destroy', client.id))
-    }
+        router.delete(route('client.destroy', client.id));
+    };
 
     return (
         <div>
-            {success && (
-                <div className="bg-emerald-500 py-2 px-4 text-right rounded mb-4">
-                    {success}
-                </div>
-            )}
-            <div className="p-2 bg-gray-50 text-gray-900 rounded-lg shadow-md">
-                <div className="overflow-auto shadow-sm sm:rounded-lg">
-                    <table className="w-full text-sm text-center text-gray-500">
-                        <thead className="text-xs text-gray-700 uppercase bg-gray-100 border-b border-gray-300">
-                            <tr>
-                                <th className="py-3">ID</th>
-                                <th className="py-3">Client Name</th>
-                                <th className="py-3">URL</th>
-                                <th className="py-3">CPU</th>
-                                <th className="py-3">RAM</th>
-                                <th className="py-3">Private IP</th>
-                                <th className="py-3">Public IP</th>
-                                <th className="py-3">OS</th>
-                                <th className="py-3">Storage</th>
-                                <th className="py-3">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {clients && clients.data && clients.data.length > 0 ? (
-                                clients.data.map((client, index) => (
-                                    <>
-                                        <tr key={client.id} className={`bg-white border-b cursor-pointer hover:bg-gray-50`} onClick={() => toggleAccordion(index)}>
-                                            <td className="py-4">{client.id}</td>
-                                            <td className="py-4">{client.name}</td>
-                                            <td className="py-4">
-                                                <a href={client.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-                                                    Live Link
-                                                </a>
-                                            </td>
-                                            <td className="py-4">{client.cpu}</td>
-                                            <td className="py-4">{client.ram}</td>
-                                            <td className="py-4">{client.privateIp}</td>
-                                            <td className="py-4">{client.publicIp}</td>
-                                            <td className="py-4">{client.os}</td>
-                                            <td className="py-4">{client.storage}</td>
-                                            <td className="py-4">
-                                                <Link href={route('client.edit', client.id)} className="font-medium text-blue-600 hover:underline mx-1">
-                                                    Edit
-                                                </Link>
-                                                <button
-                                                    onClick={e => deleteClient(client)}
-                                                    className="font-medium text-red-600 hover:underline mx-1">
-                                                    Delete
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        {openIndex === index && (
-                                            <tr>
-                                                <td colSpan="10" className="bg-gray-100 p-4">
-                                                    <div className="text-gray-700">123123123</div>
+            <div className="container mx-auto p-4">
+                {success && (
+                    <div className="bg-green-500 text-white py-2 px-4 rounded-lg mb-4 text-center">
+                        {success}
+                    </div>
+                )}
+                <div className="bg-white text-gray-900 rounded-lg shadow-lg overflow-hidden">
+                    <div className="overflow-x-auto">
+                        <table className="min-w-full divide-y divide-gray-200">
+                            <thead className="bg-gray-100">
+                                <tr>
+                                    {["ID", "Client Name", "URL", "CPU", "RAM", "Private IP", "Public IP", "Actions"].map((header) => (
+                                        <th key={header} className="py-3 px-6 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                            {header}
+                                        </th>
+                                    ))}
+                                </tr>
+                            </thead>
+                            <tbody className="bg-white divide-y divide-gray-200">
+                                {clients && clients.data && clients.data.length > 0 ? (
+                                    clients.data.map((client, index) => (
+                                        <React.Fragment key={client.id}>
+                                            <tr className="hover:bg-gray-50 cursor-pointer" onClick={() => toggleAccordion(index)}>
+                                                <td className="py-4 px-6">{client.id}</td>
+                                                <td className="py-4 px-6">{client.name}</td>
+                                                <td className="py-4 px-6">
+                                                    <a href={client.serverSpecs[0]?.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                                                        {client.serverSpecs[0]?.url ? 'Live Link' : 'N/A'}
+                                                    </a>
+                                                </td>
+                                                <td className="py-4 px-6">{client.serverSpecs[0]?.cpu || 'N/A'}</td>
+                                                <td className="py-4 px-6">{client.serverSpecs[0]?.ram || 'N/A'}</td>
+                                                <td className="py-4 px-6">{client.serverSpecs[0]?.private_ip || 'N/A'}</td>
+                                                <td className="py-4 px-6">{client.serverSpecs[0]?.public_ip || 'N/A'}</td>
+                                                <td className="py-4 px-6">
+                                                    <Link href={route('client.edit', client.id)} className="text-blue-600 hover:underline mx-1">Edit</Link>
+                                                    <button onClick={() => deleteClient(client)} className="text-red-600 hover:underline mx-1">Delete</button>
                                                 </td>
                                             </tr>
-                                        )}
-                                    </>
-                                ))
-                            ) : (
-                                <tr>
-                                    <td colSpan="10" className="py-4 text-center">No clients found.</td>
-                                </tr>
-                            )}
-                        </tbody>
+                                            {openIndex === index && (
+                                                <tr>
+                                                    <td colSpan="8" className="bg-gray-50 p-4">
+                                                        <div className="text-gray-700">
+                                                            <h4 className="font-semibold mb-2">Server Specifications: { client.name }</h4>
+                                                            {client.serverSpecs && client.serverSpecs.length > 0 ? (
+                                                                <table className="min-w-full divide-y divide-gray-200">
+                                                                    <thead className="bg-gray-100">
+                                                                        <tr>
+                                                                            <th className="py-2 px-4 text-left text-xs font-medium text-gray-700">URL</th>
+                                                                            <th className="py-2 px-4 text-left text-xs font-medium text-gray-700">CPU</th>
+                                                                            <th className="py-2 px-4 text-left text-xs font-medium text-gray-700">RAM</th>
+                                                                            <th className="py-2 px-4 text-left text-xs font-medium text-gray-700">PRIVATE IP</th>
+                                                                            <th className="py-2 px-4 text-left text-xs font-medium text-gray-700">PUBLIC IP</th>
+                                                                            <th className="py-2 px-4 text-left text-xs font-medium text-gray-700">OS</th>
+                                                                            <th className="py-2 px-4 text-left text-xs font-medium text-gray-700">Storage</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody className=" divide-y divide-gray-200">
+                                                                        {client.serverSpecs.map(spec => (
+                                                                            <tr key={spec.id} className="hover:bg-gray-100">
+                                                                                <td className="py-2 px-4">
+                                                                                    <a href={spec.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                                                                                        {spec.url ? 'Live Link' : 'N/A'}
+                                                                                    </a>
+                                                                                </td>
+                                                                                <td className="py-2 px-4">{spec.cpu}</td>
+                                                                                <td className="py-2 px-4">{spec.ram}</td>
+                                                                                <td className="py-2 px-4">{spec.private_ip}</td>
+                                                                                <td className="py-2 px-4">{spec.public_ip}</td>
+                                                                                <td className="py-2 px-4">{spec.os}</td>
+                                                                                <td className="py-2 px-4">{spec.storage}</td>
+                                                                            </tr>
+                                                                        ))}
+                                                                    </tbody>
+                                                                </table>
+                                                            ) : (
+                                                                <p>No server specifications found.</p>
+                                                            )}
+                                                            <div className="mt-4">
+                                                                <Link href={route('serverSpecs.create', client.id)} className="bg-gray-100 py-1 px-3 text-gray-800 rounded shadow transition-all hover:bg-gray-200">
+                                                                    Add server specs
+                                                                </Link>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
 
-                    </table>
+                                            )}
+                                        </React.Fragment>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="8" className="py-4 text-center">No clients found.</td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
