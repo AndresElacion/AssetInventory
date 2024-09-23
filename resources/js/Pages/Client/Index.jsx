@@ -1,4 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { Link, router } from "@inertiajs/react";
 import React, { useState } from "react";
 
 
@@ -8,6 +9,14 @@ export default function Index({ success, clients }) {
     const toggleAccordion = (index) => {
         setOpenIndex(openIndex === index ? null : index); // Toggle open/close
     };
+
+    const deleteClient = (client) => {
+        if (!window.confirm('Are you sure you want to delete the client?')) {
+            return
+        }
+
+        router.delete(route('client.destroy', client.id))
+    }
 
     return (
         <div>
@@ -52,8 +61,14 @@ export default function Index({ success, clients }) {
                                             <td className="py-4">{client.os}</td>
                                             <td className="py-4">{client.storage}</td>
                                             <td className="py-4">
-                                                <button className="text-blue-600 hover:underline mx-1">Edit</button>
-                                                <button className="text-red-600 hover:underline mx-1">Delete</button>
+                                                <Link href={route('client.edit', client.id)} className="font-medium text-blue-600 hover:underline mx-1">
+                                                    Edit
+                                                </Link>
+                                                <button
+                                                    onClick={e => deleteClient(client)}
+                                                    className="font-medium text-red-600 hover:underline mx-1">
+                                                    Delete
+                                                </button>
                                             </td>
                                         </tr>
                                         {openIndex === index && (
