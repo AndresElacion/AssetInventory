@@ -3,6 +3,7 @@
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ServerSpecsController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -19,6 +20,10 @@ Route::get('/', function () {
 Route::middleware(['auth', 'verified'])->group(function() {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('/client', ClientController::class);
+    Route::get('/specs/create/{client}', [ServerSpecsController::class, 'create'])->name('specs.create');
+    Route::post('/specs/store', [ServerSpecsController::class, 'store'])->name('specs.store');
+    Route::resource('/specs', ServerSpecsController::class);
+    Route::get('/clients/{client}/specs/create', [ServerSpecsController::class, 'create'])->name('serverSpecs.create');
 
 });
 

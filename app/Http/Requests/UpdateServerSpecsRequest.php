@@ -11,7 +11,7 @@ class UpdateServerSpecsRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,14 @@ class UpdateServerSpecsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'client_id' => ['required', 'exists:clients,id'],
+            'url' => ['required', 'max:255'],
+            'cpu' => ['required', 'max:255'],
+            'ram' => ['required', 'max:255'],
+            'private_ip' => ['required', 'max:255'],
+            'public_ip' => ['required', 'max:255'],
+            'os' => ['required', 'max:255'],
+            'storage' => ['required', 'max:255'],
         ];
     }
 }
