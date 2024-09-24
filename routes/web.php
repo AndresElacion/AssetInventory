@@ -22,6 +22,9 @@ Route::middleware(['auth', 'verified'])->group(function() {
     Route::resource('/client', ClientController::class);
     Route::get('/specs/create/{client}', [ServerSpecsController::class, 'create'])->name('specs.create');
     Route::post('/specs/store', [ServerSpecsController::class, 'store'])->name('specs.store');
+    // Route::get('/specs/{id}/edit', [ServerSpecsController::class, 'edit'])->name('specs.edit');
+    // Route::put('/specs/{id}', [ServerSpecsController::class, 'update'])->name('specs.update');
+
     Route::resource('/specs', ServerSpecsController::class);
     Route::get('/clients/{client}/specs/create', [ServerSpecsController::class, 'create'])->name('serverSpecs.create');
 

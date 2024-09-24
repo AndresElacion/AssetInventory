@@ -16,6 +16,13 @@ export default function Index({ success, clients }) {
         router.delete(route("client.destroy", client.id));
     };
 
+    const deleteServerSpecs = (spec) => {
+        if (!window.confirm("Are you sure you want to delete this server specification?")) {
+            return
+        }
+        router.delete(route("specs.destroy", spec.id))
+    }
+
     return (
         <div>
             <div className="container mx-auto p-4">
@@ -85,19 +92,20 @@ export default function Index({ success, clients }) {
                                                             {client.serverSpecs && client.serverSpecs.length > 0 ? (
                                                                 <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                                                                     <thead className="bg-gray-100 dark:bg-gray-600">
-                                                                        <tr>
-                                                                            <th className="py-2 px-4 text-left text-xs font-medium text-gray-700 dark:text-gray-300">URL</th>
-                                                                            <th className="py-2 px-4 text-left text-xs font-medium text-gray-700 dark:text-gray-300">CPU</th>
-                                                                            <th className="py-2 px-4 text-left text-xs font-medium text-gray-700 dark:text-gray-300">RAM</th>
-                                                                            <th className="py-2 px-4 text-left text-xs font-medium text-gray-700 dark:text-gray-300">PRIVATE IP</th>
-                                                                            <th className="py-2 px-4 text-left text-xs font-medium text-gray-700 dark:text-gray-300">PUBLIC IP</th>
-                                                                            <th className="py-2 px-4 text-left text-xs font-medium text-gray-700 dark:text-gray-300">OS</th>
-                                                                            <th className="py-2 px-4 text-left text-xs font-medium text-gray-700 dark:text-gray-300">Storage</th>
+                                                                        <tr className="text-center">
+                                                                            <th className="py-2 px-4 text-xs font-medium text-gray-700 dark:text-gray-300">URL</th>
+                                                                            <th className="py-2 px-4 text-xs font-medium text-gray-700 dark:text-gray-300">CPU</th>
+                                                                            <th className="py-2 px-4 text-xs font-medium text-gray-700 dark:text-gray-300">RAM</th>
+                                                                            <th className="py-2 px-4 text-xs font-medium text-gray-700 dark:text-gray-300">PRIVATE IP</th>
+                                                                            <th className="py-2 px-4 text-xs font-medium text-gray-700 dark:text-gray-300">PUBLIC IP</th>
+                                                                            <th className="py-2 px-4 text-xs font-medium text-gray-700 dark:text-gray-300">OS</th>
+                                                                            <th className="py-2 px-4 text-xs font-medium text-gray-700 dark:text-gray-300">STORAGE</th>
+                                                                            <th className="py-2 px-4 text-xs font-medium text-gray-700 dark:text-gray-300">ACTION</th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                                                                         {client.serverSpecs.map((spec) => (
-                                                                            <tr key={spec.id} className="hover:bg-gray-100 dark:hover:bg-gray-500">
+                                                                            <tr key={spec.id} className="hover:bg-gray-100 dark:hover:bg-gray-500 text-center">
                                                                                 <td className="py-2 px-4">
                                                                                     <a
                                                                                         href={spec.url}
@@ -105,7 +113,7 @@ export default function Index({ success, clients }) {
                                                                                         rel="noopener noreferrer"
                                                                                         className="text-blue-600 dark:text-blue-400 hover:underline"
                                                                                     >
-                                                                                        {spec.url ? "Live Link" : "N/A"}
+                                                                                        {spec.url ? `${spec.url}` : "N/A"}
                                                                                     </a>
                                                                                 </td>
                                                                                 <td className="py-2 px-4">{spec.cpu}</td>
@@ -114,6 +122,19 @@ export default function Index({ success, clients }) {
                                                                                 <td className="py-2 px-4">{spec.public_ip}</td>
                                                                                 <td className="py-2 px-4">{spec.os}</td>
                                                                                 <td className="py-2 px-4">{spec.storage}</td>
+                                                                                <td className="py-2 px-4">
+                                                                                    <Link
+                                                                                        href={route("specs.edit", spec.id)} // Reference the first server spec's ID
+                                                                                        className="text-blue-600 dark:text-blue-400 hover:underline mx-1"
+                                                                                    >
+                                                                                        Edit
+                                                                                    </Link>
+                                                                                    <button onClick={() => deleteServerSpecs(spec)}
+                                                                                        className="text-red-600 dark:text-red-400 hover:underline mx-1"
+                                                                                    >
+                                                                                        Delete
+                                                                                    </button>
+                                                                                </td>
                                                                             </tr>
                                                                         ))}
                                                                     </tbody>

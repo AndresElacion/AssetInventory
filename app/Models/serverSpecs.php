@@ -6,7 +6,7 @@ use App\Models\Client;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class serverSpecs extends Model
+class ServerSpecs extends Model
 {
     use HasFactory;
 

@@ -3,16 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
-use App\Models\serverSpecs;
+use App\Models\ServerSpecs;
 use Illuminate\Http\Request;
 use App\Http\Resources\ClientResource;
-use App\Http\Requests\StoreServerSpecsRequest;
 use App\Http\Resources\ServerSpecsResource;
+use App\Http\Requests\StoreServerSpecsRequest;
+use App\Http\Requests\UpdateServerSpecsRequest;
 
 class ServerSpecsController extends Controller
 {
+    // List clients with their server specs
     public function index() {
-        $clients = Client::with('serverSpecs')->orderBy('created_at', 'desc')->paginate(10); // Eager load server specs
+        $clients = Client::with('serverSpecs')->orderBy('created_at', 'desc')->paginate(10);
 
         return inertia('Dashboard', [
             'clients' => ClientResource::collection($clients),
@@ -20,18 +22,46 @@ class ServerSpecsController extends Controller
         ]);
     }
 
-    public function create(Client $client)
-{
-    return inertia('ServerSpecs/Create', [
-        'client' => new ClientResource($client),
-    ]);
-}
+    // Render server spec creation form for a client
+    public function create(Client $client) {
+        return inertia('ServerSpecs/Create', [
+            'client' => new ClientResource($client),
+        ]);
+    }
 
+    // Store server specs
     public function store(StoreServerSpecsRequest $request) {
         $data = $request->validated();
 
-        serverSpecs::create($data);
+        ServerSpecs::create($data);  // Corrected capitalization
 
         return to_route('dashboard')->with('success', 'Server Specification was created.');
+    }
+
+    // Render edit form for server specs
+    public function edit($id) {
+        // Ensure you're retrieving the server specs by ID
+        $serverSpecs = ServerSpecs::findOrFail($id);
+
+        return inertia('ServerSpecs/Edit', [
+            'serverSpecs' => new ServerSpecsResource($serverSpecs) // Pass the retrieved specs
+        ]);
+    }
+
+    public function update(UpdateServerSpecsRequest $request, $id) {
+        $serverSpecs = ServerSpecs::findOrFail($id);
+        $data = $request->validated();
+
+        $serverSpecs->update($data);
+
+        return to_route('dashboard')->with('success', "Server specification was updated.");
+    }
+
+    public function destroy($id) {
+        $destroyServerSpecs = ServerSpecs::findOrFail($id);
+
+        $destroyServerSpecs->delete();
+
+        return to_route('dashboard')->with('success', 'Server Specification was delete.');
     }
 }
