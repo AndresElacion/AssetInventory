@@ -22,7 +22,6 @@ class UpdateServerSpecsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'client_id' => ['required', 'exists:clients,id'],
             'url' => ['required', 'max:255'],
             'cpu' => ['required', 'max:255'],
             'ram' => ['required', 'max:255'],
