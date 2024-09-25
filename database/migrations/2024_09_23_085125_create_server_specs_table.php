@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('public_ip');
             $table->string('os');
             $table->string('storage');
+            $table->string('category');
+            $table->string('hosted_on');
             $table->timestamps();
         });
     }

@@ -16,6 +16,8 @@ export default function Create({ client }) {
         public_ip: '',
         os: '',
         storage: '',
+        category: '',
+        hosted_on: '',
     });
 
     const onSubmit = (e) => {
@@ -167,6 +169,44 @@ export default function Create({ client }) {
                                 />
                                 <InputError
                                     message={errors.storage}
+                                    className="mt-2 dark:text-red-500"
+                                />
+                            </div>
+                            <div className="mt-4">
+                                <InputLabel
+                                    htmlFor="client_category"
+                                    value="Client Category"
+                                />
+                                <SelectInput
+                                    name="category"
+                                    id="client_category"
+                                    className="mt-1 block w-full"
+                                    onChange={(e) => setData("category", e.target.value)}
+                                >
+                                    <option value="">Select Category</option>
+                                    <option value="physical">Physical</option>
+                                    <option value="vm">VM</option>
+                                    <option value="docker">Docker</option>
+                                    <option value="virtual_host">Virtual Host</option>
+                                </SelectInput>
+                                <InputError message={errors.category} className="mt-2"/>
+                            </div>
+                            <div className="mt-4">
+                                <InputLabel
+                                    htmlFor="client_hosted_on"
+                                    value="Client Hosted On"
+                                    className="dark:text-gray-300"
+                                />
+                                <TextInput
+                                    id="client_hosted_on"
+                                    type="text"
+                                    name="hosted_on"
+                                    value={data.hosted_on}
+                                    className="mt-1 block w-full dark:bg-gray-700 dark:text-gray-200"
+                                    onChange={e => setData('hosted_on', e.target.value)}
+                                />
+                                <InputError
+                                    message={errors.hosted_on}
                                     className="mt-2 dark:text-red-500"
                                 />
                             </div>

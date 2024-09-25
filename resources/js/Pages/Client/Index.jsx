@@ -36,7 +36,7 @@ export default function Index({ success, clients }) {
                         <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                             <thead className="bg-gray-100 dark:bg-gray-700 dark:text-gray-100">
                                 <tr>
-                                    {["ID", "Client Name", "URL", "CPU", "RAM", "Private IP", "Public IP", "Actions"].map((header) => (
+                                    {["ID", "Client Name", "URL", "CPU", "RAM", "Private IP", "Public IP", "Category", "Hosted On", "Actions"].map((header) => (
                                         <th
                                             key={header}
                                             className="py-3 px-6 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider"
@@ -70,6 +70,8 @@ export default function Index({ success, clients }) {
                                                 <td className="py-4 px-6">{client.serverSpecs[0]?.ram || "N/A"}</td>
                                                 <td className="py-4 px-6">{client.serverSpecs[0]?.private_ip || "N/A"}</td>
                                                 <td className="py-4 px-6">{client.serverSpecs[0]?.public_ip || "N/A"}</td>
+                                                <td className="py-4 px-6">{client.serverSpecs[0]?.category || "N/A"}</td>
+                                                <td className="py-4 px-6">{client.serverSpecs[0]?.hosted_on || "N/A"}</td>
                                                 <td className="py-4 px-6">
                                                     <Link href={route("client.edit", client.id)} className="text-blue-600 dark:text-blue-400 hover:underline mx-1">
                                                         Edit
@@ -84,7 +86,7 @@ export default function Index({ success, clients }) {
                                             </tr>
                                             {openIndex === index && (
                                                 <tr>
-                                                    <td colSpan="8" className="bg-gray-50 dark:bg-gray-700 p-4">
+                                                    <td colSpan="10" className="bg-gray-50 dark:bg-gray-700 p-4">
                                                         <div className="text-gray-700 dark:text-gray-300">
                                                             <h4 className="font-semibold mb-2">
                                                                 Server Specifications: {client.name}
@@ -100,6 +102,8 @@ export default function Index({ success, clients }) {
                                                                             <th className="py-2 px-4 text-xs font-medium text-gray-700 dark:text-gray-300">PUBLIC IP</th>
                                                                             <th className="py-2 px-4 text-xs font-medium text-gray-700 dark:text-gray-300">OS</th>
                                                                             <th className="py-2 px-4 text-xs font-medium text-gray-700 dark:text-gray-300">STORAGE</th>
+                                                                            <th className="py-2 px-4 text-xs font-medium text-gray-700 dark:text-gray-300">CATEGORY</th>
+                                                                            <th className="py-2 px-4 text-xs font-medium text-gray-700 dark:text-gray-300">HOSTED ON</th>
                                                                             <th className="py-2 px-4 text-xs font-medium text-gray-700 dark:text-gray-300">ACTION</th>
                                                                         </tr>
                                                                     </thead>
@@ -122,7 +126,9 @@ export default function Index({ success, clients }) {
                                                                                 <td className="py-2 px-4">{spec.public_ip}</td>
                                                                                 <td className="py-2 px-4">{spec.os}</td>
                                                                                 <td className="py-2 px-4">{spec.storage}</td>
-                                                                                <td className="py-2 px-4">
+                                                                                <td className="py-2 px-4">{spec.category}</td>
+                                                                                <td className="py-2 px-4">{spec.hosted_on}</td>
+                                                                                <td className="py-2 px-4 text-nowrap">
                                                                                     <Link
                                                                                         href={route("specs.edit", spec.id)} // Reference the first server spec's ID
                                                                                         className="text-blue-600 dark:text-blue-400 hover:underline mx-1"
