@@ -176,11 +176,12 @@ export default function Create({ client }) {
                                 <InputLabel
                                     htmlFor="client_category"
                                     value="Client Category"
+                                    className="dark:text-gray-300"
                                 />
                                 <SelectInput
                                     name="category"
                                     id="client_category"
-                                    className="mt-1 block w-full"
+                                    className="mt-1 block w-full dark:bg-gray-700 dark:text-gray-200"
                                     onChange={(e) => setData("category", e.target.value)}
                                 >
                                     <option value="">Select Category</option>
