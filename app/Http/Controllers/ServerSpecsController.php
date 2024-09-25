@@ -33,18 +33,18 @@ class ServerSpecsController extends Controller
     public function store(StoreServerSpecsRequest $request) {
         $data = $request->validated();
 
-        ServerSpecs::create($data);  // Corrected capitalization
+        ServerSpecs::create($data);
 
         return to_route('dashboard')->with('success', 'Server Specification was created.');
     }
 
     // Render edit form for server specs
     public function edit($id) {
-        // Ensure you're retrieving the server specs by ID
+        
         $serverSpecs = ServerSpecs::findOrFail($id);
 
         return inertia('ServerSpecs/Edit', [
-            'serverSpecs' => new ServerSpecsResource($serverSpecs) // Pass the retrieved specs
+            'serverSpecs' => new ServerSpecsResource($serverSpecs)
         ]);
     }
 

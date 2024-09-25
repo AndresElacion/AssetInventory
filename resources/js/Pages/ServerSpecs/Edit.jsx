@@ -4,6 +4,7 @@ import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 import InputError from "@/Components/InputError";
 import ThemeToggle from "@/Components/ThemeToggle";
+import SelectInput from "@/Components/SelectInput";
 
 export default function Edit({ serverSpecs }) {
     // Initialize form with the correct data
@@ -15,6 +16,8 @@ export default function Edit({ serverSpecs }) {
         public_ip: serverSpecs.public_ip || '',
         os: serverSpecs.os || '',
         storage: serverSpecs.storage || '', 
+        category: serverSpecs.category || '',
+        hosted_on: serverSpecs.hosted_on || '',
         _method: 'PUT',
     });
 
@@ -134,6 +137,46 @@ export default function Edit({ serverSpecs }) {
                                     onChange={e => setData('storage', e.target.value)}
                                 />
                                 <InputError message={errors.storage} className="mt-2" />
+                            </div>
+
+                            <div className="mt-4">
+                                <InputLabel
+                                    htmlFor="client_category"
+                                    value="Client Category"
+                                />
+                                <SelectInput
+                                    name="category"
+                                    id="client_category"
+                                    className="mt-1 block w-full"
+                                    onChange={(e) => setData("category", e.target.value)}
+                                >
+                                    <option value="">Select Category</option>
+                                    <option value="physical">Physical</option>
+                                    <option value="vm">VM</option>
+                                    <option value="docker">Docker</option>
+                                    <option value="virtual_host">Virtual Host</option>
+                                </SelectInput>
+                                <InputError message={errors.category} className="mt-2"/>
+                            </div>
+
+                            <div className="mt-4">
+                                <InputLabel
+                                    htmlFor="client_hosted_on"
+                                    value="Client Hosted On"
+                                    className="dark:text-gray-300"
+                                />
+                                <TextInput
+                                    id="client_hosted_on"
+                                    type="text"
+                                    name="hosted_on"
+                                    value={data.hosted_on}
+                                    className="mt-1 block w-full dark:bg-gray-700 dark:text-gray-200"
+                                    onChange={e => setData('hosted_on', e.target.value)}
+                                />
+                                <InputError
+                                    message={errors.hosted_on}
+                                    className="mt-2 dark:text-red-500"
+                                />
                             </div>
 
                             <div className="mt-4 text-right">

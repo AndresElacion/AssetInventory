@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateServerSpecsRequest extends FormRequest
@@ -29,6 +30,8 @@ class UpdateServerSpecsRequest extends FormRequest
             'public_ip' => ['required', 'max:255'],
             'os' => ['required', 'max:255'],
             'storage' => ['required', 'max:255'],
+            'category' => ['required', Rule::in(['physical', 'vm', 'docker', 'virtual_host'])],
+            'hosted_on' => ['required', 'max:255']
         ];
     }
 }
