@@ -48,7 +48,8 @@ class ClientController extends Controller
 
 
     public function edit(Client $client) {
-         $users = User::all();
+        $users = User::all();
+
         return inertia('Client/Edit', [
             'client' => new ClientResource($client),
             'users' => $users,
@@ -56,9 +57,18 @@ class ClientController extends Controller
     }
 
     public function update(UpdateClientRequest $request, Client $client) {
-        $data = $request->validated();
+        $clientData = $request->validated();
 
-        $client->update($data);
+        // Extract user_ids from the validated data
+        $userIds = $clientData['user_ids'] ?? [];
+        unset($clientData['user_ids']);
+
+        $client->update($clientData);
+
+        // Attach users to the client
+        if (!empty($userIds)) {
+            $client->users()->attach($userIds);
+        }
 
         return to_route('dashboard')->with('success', "Client \"$client->name\" was updated.");
     }
