@@ -20,7 +20,7 @@ export default function Index({ success, clients }) {
         if (!window.confirm("Are you sure you want to delete this server specification?")) {
             return
         }
-        router.delete(route("specs.destroy", spec.id))
+        router.delete(route("specs.destroy", spec.id));
     }
 
     return (
@@ -35,7 +35,19 @@ export default function Index({ success, clients }) {
                     <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                         <thead className="bg-gray-100 dark:bg-gray-700 dark:text-gray-100">
                             <tr>
-                                {["ID", "Client Name", "URL", "CPU", "RAM", "Private IP", "Public IP", "Category", "Hosted On", "Actions"].map((header) => (
+                                {[
+                                    "ID", 
+                                    "Client Name", 
+                                    "URL", 
+                                    "CPU", 
+                                    "RAM", 
+                                    "Private IP", 
+                                    "Public IP", 
+                                    "Category", 
+                                    "Hosted On", 
+                                    "Assigned User",
+                                    "Actions"
+                                ].map((header) => (
                                     <th
                                         key={header}
                                         className="py-3 px-6 text-left text-xs font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider"
@@ -71,6 +83,23 @@ export default function Index({ success, clients }) {
                                             <td className="py-4 px-6">{client.serverSpecs[0]?.public_ip || "N/A"}</td>
                                             <td className="py-4 px-6">{client.serverSpecs[0]?.category || "N/A"}</td>
                                             <td className="py-4 px-6">{client.serverSpecs[0]?.hosted_on || "N/A"}</td>
+                                            <td className="py-4 px-6">
+                                                {client.users && client.users.length > 0 ? (
+                                                    <div className="flex flex-wrap">
+                                                        {client.users.map((user, index) => (
+                                                            <span
+                                                                key={index} // Use index if user doesn't have a unique ID
+                                                                className="mr-2 mb-1 px-2 py-1 text-sm text-white bg-blue-500 rounded-full"
+                                                            >
+                                                                {user} {/* This will display "user" and "admin" */}
+                                                            </span>
+                                                        ))}
+                                                    </div>
+                                                ) : (
+                                                    <span className="text-gray-500">Unassigned</span>
+                                                )}
+                                            </td>
+
                                             <td className="py-4 px-6 text-nowrap">
                                                 <Link href={route("client.edit", client.id)} className="text-blue-600 dark:text-blue-400 hover:underline mx-1">
                                                     Edit
@@ -85,7 +114,7 @@ export default function Index({ success, clients }) {
                                         </tr>
                                         {openIndex === index && (
                                             <tr>
-                                                <td colSpan="10" className="bg-gray-50 dark:bg-gray-700 p-4">
+                                                <td colSpan="11" className="bg-gray-50 dark:bg-gray-700 p-4">
                                                     <div className="text-gray-700 dark:text-gray-300">
                                                         <h4 className="font-semibold mb-2">
                                                             Server Specifications: {client.name}
@@ -152,7 +181,7 @@ export default function Index({ success, clients }) {
                                                                 href={route("serverSpecs.create", client.id)}
                                                                 className="bg-gray-100 dark:bg-gray-600 py-1 px-3 text-gray-800 dark:text-gray-300 rounded shadow transition-all hover:bg-gray-200 dark:hover:bg-gray-500"
                                                             >
-                                                                Add server specs
+                                                                Add Server Specifications
                                                             </Link>
                                                         </div>
                                                     </div>
@@ -163,7 +192,9 @@ export default function Index({ success, clients }) {
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="8" className="py-4 text-center dark:text-gray-300">No clients found.</td>
+                                    <td colSpan="11" className="py-4 px-6 text-center text-gray-500 dark:text-gray-300">
+                                        No clients found.
+                                    </td>
                                 </tr>
                             )}
                         </tbody>

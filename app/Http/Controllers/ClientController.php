@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Client;
 use Illuminate\Http\Request;
+use App\Http\Resources\ClientResource;
 use App\Http\Requests\StoreClientRequest;
 use App\Http\Requests\UpdateClientRequest;
-use App\Http\Resources\ClientResource;
 
 class ClientController extends Controller
 {
@@ -20,20 +21,37 @@ class ClientController extends Controller
     }
 
     public function create() {
-        return inertia('Client/Create');
+        $users = User::orderBy('created_at', 'desc')->get();
+
+        return inertia('Client/Create', [
+            'users' => $users
+        ]);
     }
 
     public function store(StoreClientRequest $request) {
-        $client = $request->validated();
-        
-        Client::create($client);
+        $clientData = $request->validated();
+
+        // Extract user_ids from the validated data
+        $userIds = $clientData['user_ids'] ?? [];
+        unset($clientData['user_ids']);
+
+        // Create the client
+        $client = Client::create($clientData);
+
+        // Attach users to the client
+        if (!empty($userIds)) {
+            $client->users()->attach($userIds);
+        }
 
         return to_route('dashboard')->with('success', 'New client was created.');
     }
 
+
     public function edit(Client $client) {
+         $users = User::all();
         return inertia('Client/Edit', [
-            'client' => new ClientResource($client)
+            'client' => new ClientResource($client),
+            'users' => $users,
         ]);
     }
 

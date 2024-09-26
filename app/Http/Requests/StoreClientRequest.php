@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreClientRequest extends FormRequest
@@ -23,7 +24,9 @@ class StoreClientRequest extends FormRequest
     {
         return [
             "name" => ['required', "max:255"],
-            "email" => ["required", "string", "email", "unique:clients,email"]
+            "email" => ["required", "string", "email", "unique:clients,email"],
+            "user_ids" => ['nullable', 'array'], // Nullable if it's optional
+            "user_ids.*" => ['required', Rule::exists('users', 'id')]
         ];
     }
 }
