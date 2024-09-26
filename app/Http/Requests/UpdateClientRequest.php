@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateClientRequest extends FormRequest
@@ -23,7 +24,9 @@ class UpdateClientRequest extends FormRequest
     {
         return [
             "name" => ['nullable', "max:255"],
-            "email" => ["nullable", "string", "email", "unique:clients,email"]
+            "email" => ["nullable", "string", "email", "unique:clients,email"],
+            "user_ids" => ['nullable', 'array'], // Nullable if it's optional
+            "user_ids.*" => ['required', Rule::exists('users', 'id')]
         ];
     }
 }

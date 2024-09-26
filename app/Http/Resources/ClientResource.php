@@ -21,6 +21,7 @@ class ClientResource extends JsonResource
             "name" => $this->name,
             "email" => $this->email,
             'serverSpecs' => $this->serverSpecs, 
+            'users' => $this->users->pluck('name'),
         ];
     }
 }
