@@ -3,7 +3,8 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build"
+        "build": "vite build",
+        "postinstall": "php artisan config:cache && php artisan route:cache && php artisan view:cache"
     },
     "devDependencies": {
         "@inertiajs/react": "^1.0.0",
