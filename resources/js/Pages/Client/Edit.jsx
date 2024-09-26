@@ -10,16 +10,15 @@ export default function Edit({ client, users }) {
     const { data, setData, post, errors } = useForm({
         name: client.name || '',
         email: client.email || '',
-        user_ids: client.user_id || [],
+        user_ids: client.user_ids || [], // Make sure this matches how your client data is structured
         _method: 'PUT'
     });
     
-    const [selectedUsers, setSelectedUsers] = useState([]);
+    const [selectedUsers, setSelectedUsers] = useState(data.user_ids || []); // Initialize selectedUsers with the existing user_ids
 
     useEffect(() => {
-        setData('user_ids', selectedUsers);
+        setData('user_ids', selectedUsers); // Sync user_ids with selectedUsers
     }, [selectedUsers]);
-
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -27,13 +26,17 @@ export default function Edit({ client, users }) {
     };
 
     const handleUserToggle = (userId) => {
-        setSelectedUsers(prevSelected =>
-            prevSelected.includes(userId)
-                ? prevSelected.filter(id => id !== userId)
-                : [...prevSelected, userId]
-        );
+        setSelectedUsers(prevSelected => {
+            // Check if the userId is already selected
+            if (prevSelected.includes(userId)) {
+                // If yes, remove it
+                return prevSelected.filter(id => id !== userId);
+            } else {
+                // If no, add it
+                return [...prevSelected, userId];
+            }
+        });
     };
-
 
     return (
         <AuthenticatedLayout header={
@@ -98,8 +101,8 @@ export default function Edit({ client, users }) {
                                         <label key={user.id} className="flex items-center">
                                             <input
                                                 type="checkbox"
-                                                checked={selectedUsers.includes(user.id)}
-                                                onChange={() => handleUserToggle(user.id)}
+                                                checked={selectedUsers.includes(user.id)} // Check if the user ID is in selectedUsers
+                                                onChange={() => handleUserToggle(user.id)} // Toggle user selection
                                                 className="form-checkbox h-5 w-5 text-blue-600 dark:bg-gray-700"
                                             />
                                             <span className="ml-2 text-gray-700 dark:text-gray-300">{user.name}</span>

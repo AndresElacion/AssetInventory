@@ -57,21 +57,20 @@ class ClientController extends Controller
     }
 
     public function update(UpdateClientRequest $request, Client $client) {
-        $clientData = $request->validated();
+    $clientData = $request->validated();
 
-        // Extract user_ids from the validated data
-        $userIds = $clientData['user_ids'] ?? [];
-        unset($clientData['user_ids']);
+    // Extract user_ids from the validated data
+    $userIds = $clientData['user_ids'] ?? [];
+    unset($clientData['user_ids']);
 
-        $client->update($clientData);
+    // Update the client data
+    $client->update($clientData);
 
-        // Attach users to the client
-        if (!empty($userIds)) {
-            $client->users()->attach($userIds);
-        }
+    // Sync users with the client
+    $client->users()->sync($userIds); // This will replace existing users with the new ones
 
-        return to_route('dashboard')->with('success', "Client \"$client->name\" was updated.");
-    }
+    return to_route('dashboard')->with('success', "Client \"$client->name\" was updated.");
+}
 
     public function destroy(Client $client) {
         $name = $client->name;
