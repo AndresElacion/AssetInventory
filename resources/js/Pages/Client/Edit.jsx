@@ -4,18 +4,36 @@ import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 import InputError from "@/Components/InputError";
 import ThemeToggle from "@/Components/ThemeToggle"; // Import the ThemeToggle component
+import { useEffect, useState } from "react";
 
-export default function Edit({ client }) {
+export default function Edit({ client, users }) {
     const { data, setData, post, errors } = useForm({
         name: client.name || '',
         email: client.email || '',
+        user_ids: client.user_id || [],
         _method: 'PUT'
     });
+    
+    const [selectedUsers, setSelectedUsers] = useState([]);
+
+    useEffect(() => {
+        setData('user_ids', selectedUsers);
+    }, [selectedUsers]);
+
 
     const onSubmit = (e) => {
         e.preventDefault();
         post(route("client.update", client.id));
     };
+
+    const handleUserToggle = (userId) => {
+        setSelectedUsers(prevSelected =>
+            prevSelected.includes(userId)
+                ? prevSelected.filter(id => id !== userId)
+                : [...prevSelected, userId]
+        );
+    };
+
 
     return (
         <AuthenticatedLayout header={
@@ -66,6 +84,30 @@ export default function Edit({ client }) {
                                 />
                                 <InputError
                                     message={errors.email}
+                                    className="mt-2 dark:text-red-500"
+                                />
+                            </div>
+
+                            <div className="mt-4">
+                                <InputLabel
+                                    value="Assign Users"
+                                    className="dark:text-gray-300"
+                                />
+                                <div className="mt-2 space-y-2">
+                                    {users.map(user => (
+                                        <label key={user.id} className="flex items-center">
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedUsers.includes(user.id)}
+                                                onChange={() => handleUserToggle(user.id)}
+                                                className="form-checkbox h-5 w-5 text-blue-600 dark:bg-gray-700"
+                                            />
+                                            <span className="ml-2 text-gray-700 dark:text-gray-300">{user.name}</span>
+                                        </label>
+                                    ))}
+                                </div>
+                                <InputError
+                                    message={errors.user_ids}
                                     className="mt-2 dark:text-red-500"
                                 />
                             </div>
