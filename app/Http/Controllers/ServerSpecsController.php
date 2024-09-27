@@ -13,8 +13,18 @@ use App\Http\Requests\UpdateServerSpecsRequest;
 class ServerSpecsController extends Controller
 {
     // List clients with their server specs
-    public function index() {
-        $clients = Client::with('serverSpecs')->orderBy('created_at', 'desc')->paginate(10);
+    public function index(Request $request) {
+        $clients = Client::with('serverSpecs', 'users');
+
+         // Check if there is a sort request
+        if ($request->has('sort')) {
+            $sortField = $request->sort;
+            if (in_array($sortField, ['physical', 'vm', 'docker', 'virtual_host'])) { // Allowed categories
+                $clients = $clients->orderBy('category', 'asc'); // Or 'desc' depending on your preference
+            }
+        }
+
+        $clients = $clients->paginate(10); // Example pagination
 
         return inertia('Dashboard', [
             'clients' => ClientResource::collection($clients),
