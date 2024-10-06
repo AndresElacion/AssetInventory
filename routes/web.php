@@ -1,12 +1,13 @@
 <?php
 
-use App\Http\Controllers\ClientController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ServerSpecsController;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Application;
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ServerSpecsController;
+use App\Http\Controllers\Auth\RegisteredUserController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -24,7 +25,10 @@ Route::middleware(['auth', 'verified'])->group(function() {
     Route::post('/specs/store', [ServerSpecsController::class, 'store'])->name('specs.store');
     Route::resource('/specs', ServerSpecsController::class);
     Route::get('/clients/{client}/specs/create', [ServerSpecsController::class, 'create'])->name('serverSpecs.create');
-
+    Route::get('/clients/{client}/specs/{spec}/edit', [ServerSpecsController::class, 'edit'])->name('serverSpecs.edit');
+    Route::get('/create/user', [RegisteredUserController::class, 'create'])
+                ->name('user.create');
+    Route::post('/add/user', [RegisteredUserController::class, 'store'])->name('user.store');
 });
 
 Route::middleware('auth')->group(function () {
