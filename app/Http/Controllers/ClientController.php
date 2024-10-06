@@ -5,18 +5,23 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\ClientResource;
 use App\Http\Requests\StoreClientRequest;
 use App\Http\Requests\UpdateClientRequest;
 
 class ClientController extends Controller
 {
-    public function Index() {
+    public function index() {
         $clients = Client::orderBy('created_at', 'desc')->paginate(10);
+
+        // Use a fallback in case the user is not authenticated
+        $role = Auth::user() ? Auth::user()->role : null;
 
         return inertia('Client/Index', [
             'clients' => ClientResource::collection($clients),
             'success' => session('success'),
+            'role' => $role, // Make sure this value is being passed
         ]);
     }
 
@@ -31,21 +36,17 @@ class ClientController extends Controller
     public function store(StoreClientRequest $request) {
         $clientData = $request->validated();
 
-        // Extract user_ids from the validated data
         $userIds = $clientData['user_ids'] ?? [];
         unset($clientData['user_ids']);
 
-        // Create the client
         $client = Client::create($clientData);
 
-        // Attach users to the client
         if (!empty($userIds)) {
             $client->users()->attach($userIds);
         }
 
         return to_route('dashboard')->with('success', 'New client was created.');
     }
-
 
     public function edit(Client $client) {
         $users = User::all();
@@ -57,20 +58,17 @@ class ClientController extends Controller
     }
 
     public function update(UpdateClientRequest $request, Client $client) {
-    $clientData = $request->validated();
+        $clientData = $request->validated();
 
-    // Extract user_ids from the validated data
-    $userIds = $clientData['user_ids'] ?? [];
-    unset($clientData['user_ids']);
+        $userIds = $clientData['user_ids'] ?? [];
+        unset($clientData['user_ids']);
 
-    // Update the client data
-    $client->update($clientData);
+        $client->update($clientData);
 
-    // Sync users with the client
-    $client->users()->sync($userIds); // This will replace existing users with the new ones
+        $client->users()->sync($userIds);
 
-    return to_route('dashboard')->with('success', "Client \"$client->name\" was updated.");
-}
+        return to_route('dashboard')->with('success', "Client \"$client->name\" was updated.");
+    }
 
     public function destroy(Client $client) {
         $name = $client->name;

@@ -16,7 +16,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                     <div className="relative w-full max-w-2xl px-6 lg:max-w-7xl">
                         <header className="grid grid-cols-2 items-center gap-2 py-10 lg:grid-cols-3">
                             <div className="flex lg:justify-center lg:col-start-2">
-                                
+                               
                             </div>
                             <nav className="-mx-3 flex flex-1 justify-end">
                                 {auth.user ? (
@@ -47,6 +47,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
 
                         <div class="relative pt-40 pb-20 dark:bg-gray-900">
                             <div class="relative xl:container m-auto px-6 md:px-12 lg:px-6">
+                                 <img src="/logo/favicon.png" alt="" width="200px"/>
                                 <h1 class="sm:mx-auto sm:w-10/12 md:w-2/3 font-black text-blue-900 text-4xl text-center sm:text-5xl md:text-6xl lg:w-auto lg:text-left xl:text-7xl dark:text-white">Welcome to<br class="lg:block hidden"/> <span class="relative text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-300">Client Asset Pro</span>.</h1>
                                 <div class="lg:flex">
                                     <div class="relative mt-8 md:mt-16 space-y-8 sm:w-10/12 md:w-2/3 lg:ml-0 sm:mx-auto text-center lg:text-left lg:mr-auto lg:w-7/12">
@@ -57,7 +58,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                            This application is for testing and development purposes only. Please do not enter any personal, sensitive, or confidential information. Any data entered may not be secure and is subject to deletion without notice. By using this application, you acknowledge that it is not intended for production use.
                                         </p>
                                         <p class="sm:text-lg text-gray-700 dark:text-gray-300 lg:w-11/12">
-                                           For any inquiries, feel free to contact me: <a href="andreielacion5@gmail.com" className='hover:underline'>Here</a>.
+                                           For any inquiries, feel free to contact me: <a href="andreielacion5@gmail.com" className='hover:underline'>Andres Elacion III</a>.
                                         </p>
                                         <div class="grid grid-cols-3 space-x-4 md:space-x-6 md:flex md:justify-center lg:justify-start">
                                             <a aria-label="add to slack" href="https://github.com/AndresElacion/AssetInventory" target='_blank' class="p-4 border border-gray-200 dark:bg-gray-800 dark:border-gray-700 rounded-full duration-300 hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-600/20 dark:hover:border-cyan-300/30">

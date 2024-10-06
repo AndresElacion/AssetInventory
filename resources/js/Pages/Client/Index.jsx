@@ -2,7 +2,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Link, router } from "@inertiajs/react";
 import React, { useState } from "react";
 
-export default function Index({ success, clients }) {
+export default function Index({ success, clients, role }) {
     const [openIndex, setOpenIndex] = useState(null); // State to track the open accordion index
      const [filteredClients, setFilteredClients] = useState(clients.data); // State for filtered clients
     const [selectedCategory, setSelectedCategory] = useState(""); // State for selected category
@@ -38,6 +38,8 @@ export default function Index({ success, clients }) {
             setFilteredClients(clients.data); // Reset to original list if no category is selected
         }
     };
+
+    console.log("Role:", role); // Add this to check the role value
 
     return (
         <div className="relative justify-center items-center p-4">
@@ -136,15 +138,25 @@ export default function Index({ success, clients }) {
                                             </td>
 
                                             <td className="py-4 px-6 text-nowrap">
-                                                <Link href={route("client.edit", client.id)} className="text-blue-600 dark:text-blue-400 hover:underline mx-1">
-                                                    Edit
-                                                </Link>
-                                                <button
-                                                    onClick={() => deleteClient(client)}
-                                                    className="text-red-600 dark:text-red-400 hover:underline mx-1"
-                                                >
-                                                    Delete
-                                                </button>
+                                                {
+                                                    role === 'admin' ? (
+                                                        <>
+                                                            <Link href={route("client.edit", client.id)} className="text-blue-600 dark:text-blue-400 hover:underline mx-1">
+                                                                Edit
+                                                            </Link>
+                                                            <button
+                                                                onClick={() => deleteClient(client)}
+                                                                className="text-red-600 dark:text-red-400 hover:underline mx-1"
+                                                            >
+                                                                Delete
+                                                            </button>
+                                                        </>
+                                                    ) : (
+                                                        <Link href={route("client.edit", client.id)} className="text-blue-600 dark:text-blue-400 hover:underline mx-1">
+                                                            Edit
+                                                        </Link>
+                                                    )
+                                                }
                                             </td>
                                         </tr>
                                         {openIndex === index && (
@@ -191,13 +203,32 @@ export default function Index({ success, clients }) {
                                                                         <td className="py-2 px-4">{spec.storage}</td>
                                                                         <td className="py-2 px-4">{spec.category}</td>
                                                                         <td className="py-2 px-4">{spec.hosted_on}</td>
-                                                                        <td className="py-2 px-4">
-                                                                            <button
-                                                                                onClick={() => deleteServerSpecs(spec)}
-                                                                                className="text-red-600 dark:text-red-400 hover:underline"
-                                                                            >
-                                                                                Delete
-                                                                            </button>
+                                                                        <td className="py-2 px-4 text-nowrap">
+                                                                            {
+                                                                                role === 'admin' ? (
+                                                                                    <>
+                                                                                        <Link
+                                                                                            href={route("serverSpecs.edit", { client: client.id, spec: spec.id })} // Ensure you pass both parameters correctly
+                                                                                            className="text-blue-600 dark:text-blue-400 hover:underline mx-1"
+                                                                                        >
+                                                                                            Edit
+                                                                                        </Link>
+                                                                                        <button
+                                                                                            onClick={() => deleteServerSpecs(spec)}
+                                                                                            className="text-red-600 dark:text-red-400 hover:underline"
+                                                                                        >
+                                                                                            Delete
+                                                                                        </button>
+                                                                                    </>
+                                                                                ) : (
+                                                                                    <Link
+                                                                                    href={route("serverSpecs.edit", { client: client.id, spec: spec.id })} // Ensure you pass both parameters correctly
+                                                                                    className="text-blue-600 dark:text-blue-400 hover:underline mx-1"
+                                                                                    >
+                                                                                        Edit
+                                                                                    </Link>   
+                                                                                )        
+                                                                            }
                                                                         </td>
                                                                     </tr>
                                                                 ))}

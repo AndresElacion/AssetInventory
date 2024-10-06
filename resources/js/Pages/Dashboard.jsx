@@ -3,7 +3,7 @@ import { Head, Link } from '@inertiajs/react';
 import Index from './Client/Index';
 import ThemeToggle from '@/Components/ThemeToggle';
 
-export default function Dashboard({ clients }) {
+export default function Dashboard({ clients, role }) {
     return (
         <AuthenticatedLayout
             header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">Client Details</h2>}
@@ -19,9 +19,14 @@ export default function Dashboard({ clients }) {
                         </Link>
                     </div>
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                        <Index clients={clients} />
+                        <Index clients={clients} role={role} />
                     </div>
                 </div>
+            </div>
+
+            <div className="dark:text-gray-300">
+                <h1>Copyright: 2024</h1>
+                <p>By: Andres Elacion III</p>
             </div>
         </AuthenticatedLayout>
     );
