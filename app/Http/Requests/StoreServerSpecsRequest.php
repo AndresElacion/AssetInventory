@@ -32,7 +32,9 @@ class StoreServerSpecsRequest extends FormRequest
             'os' => ['required', 'max:255'],
             'storage' => ['required', 'max:255'],
             'category' => ['required', Rule::in(['physical', 'vm', 'docker', 'virtual_host'])],
-            'hosted_on' => ['required', 'max:255']
+            'hosted_on' => ['required', 'max:255'],
+            'sso' => ['required', Rule::in(['saml', 'id'])],
+            'mfa' => ['required', Rule::in(['email', 'sms'])]
         ];
     }
 }
