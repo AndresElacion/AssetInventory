@@ -34,19 +34,13 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                         >
                                             Log in
                                         </Link>
-                                        <Link
-                                            href={route('register')}
-                                            className="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
-                                        >
-                                            Register
-                                        </Link>
                                     </>
                                 )}
                             </nav>
                         </header>
 
-                        <div class="relative pt-40 pb-20 dark:bg-gray-900">
-                            <div class="relative xl:container m-auto px-6 md:px-12 lg:px-6">
+                        <div class="pt-20 pb-20">
+                            <div class="xl:container m-auto px-6 md:px-12 lg:px-6">
                                  <img src="/logo/favicon.png" alt="" width="200px"/>
                                 <h1 class="sm:mx-auto sm:w-10/12 md:w-2/3 font-black text-blue-900 text-4xl text-center sm:text-5xl md:text-6xl lg:w-auto lg:text-left xl:text-7xl dark:text-white">Welcome to<br class="lg:block hidden"/> <span class="relative text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-300">Client Asset Pro</span>.</h1>
                                 <div class="lg:flex">
@@ -59,18 +53,6 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                         </p>
                                         <p class="sm:text-lg text-gray-700 dark:text-gray-300 lg:w-11/12">
                                            For any inquiries, feel free to contact me: <a href="andreielacion5@gmail.com" className='hover:underline'>Andres Elacion III</a>.
-                                        </p>
-                                        <div class="grid grid-cols-3 space-x-4 md:space-x-6 md:flex md:justify-center lg:justify-start">
-                                            <a aria-label="add to slack" href="https://github.com/AndresElacion/AssetInventory" target='_blank' class="p-4 border border-gray-200 dark:bg-gray-800 dark:border-gray-700 rounded-full duration-300 hover:border-cyan-400 hover:shadow-lg hover:shadow-cyan-600/20 dark:hover:border-cyan-300/30">
-                                                <div class="flex justify-center space-x-4">
-                                                    <span class="hidden font-medium md:block dark:text-white">Github</span>
-                                                </div>
-                                            </a>
-                                        </div>
-                                        <p class="sm:text-lg text-gray-700 dark:text-gray-300 lg:w-11/12">
-                                            Testing Account: <br />
-                                            email: user@test.com <br />
-                                            password: password
                                         </p>
                                     </div>
                                 </div>
