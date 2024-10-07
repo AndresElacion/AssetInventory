@@ -32,7 +32,7 @@ class UpdateServerSpecsRequest extends FormRequest
             'storage' => ['required', 'max:255'],
             'category' => ['required', Rule::in(['physical', 'vm', 'docker', 'virtual_host'])],
             'hosted_on' => ['required', 'max:255'],
-            'sso' => ['required', Rule::in(['saml', 'id'])],
+            'sso' => ['required', Rule::in(['samlV2.0', 'openIdConnect', 'OAuth'])],
             'mfa' => ['required', Rule::in(['email', 'sms'])]
         ];
     }

@@ -39,7 +39,11 @@ export default function Index({ success, clients, role }) {
         }
     };
 
-    console.log("Role:", role); // Add this to check the role value
+    const ssoDisplayNames = {
+        'samlV2.0': 'SAML V2.0',
+        'openIdConnect': 'OpenID Connect',
+        'OAuth': 'OAuth'
+    };
 
     return (
         <div className="relative justify-center items-center p-4">
@@ -138,7 +142,7 @@ export default function Index({ success, clients, role }) {
                                                     <span className="text-gray-500">Unassigned</span>
                                                 )}
                                             </td>
-                                            <td className="py-4 px-6">{client.serverSpecs[0]?.sso || "N/A"}</td>
+                                            <td className="py-4 px-6 text-nowrap">{ssoDisplayNames[client.serverSpecs[0]?.sso] || "N/A"}</td>
                                             <td className="py-4 px-6">{client.serverSpecs[0]?.mfa || "N/A"}</td>
                                             <td className="py-4 px-6 text-nowrap">
                                                 {
@@ -208,7 +212,7 @@ export default function Index({ success, clients, role }) {
                                                                             <td className="py-2 px-4">{spec.storage}</td>
                                                                             <td className="py-2 px-4">{spec.category}</td>
                                                                             <td className="py-2 px-4">{spec.hosted_on}</td>
-                                                                            <td className="py-2 px-4">{spec.sso}</td>
+                                                                            <td className="py-2 px-4 text-nowrap">{ssoDisplayNames[spec.sso]}</td>
                                                                             <td className="py-2 px-4">{spec.mfa}</td>
                                                                             <td className="py-2 px-4 text-nowrap">
                                                                                 {
