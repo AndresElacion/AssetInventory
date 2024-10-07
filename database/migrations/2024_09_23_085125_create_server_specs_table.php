@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('storage');
             $table->string('category');
             $table->string('hosted_on');
+            $table->string('sso');
+            $table->string('mfa');
             $table->timestamps();
         });
     }

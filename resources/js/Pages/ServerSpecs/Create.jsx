@@ -18,6 +18,8 @@ export default function Create({ client }) {
         storage: '',
         category: '',
         hosted_on: '',
+        sso: '',
+        mfa: ''
     });
 
     const onSubmit = (e) => {
@@ -191,6 +193,42 @@ export default function Create({ client }) {
                                     <option value="virtual_host">Virtual Host</option>
                                 </SelectInput>
                                 <InputError message={errors.category} className="mt-2"/>
+                            </div>
+                            <div className="mt-4">
+                                <InputLabel
+                                    htmlFor="client_sso"
+                                    value="Client SSO"
+                                    className="dark:text-gray-300"
+                                />
+                                <SelectInput
+                                    name="sso"
+                                    id="client_sso"
+                                    className="mt-1 block w-full dark:bg-gray-700 dark:text-gray-200"
+                                    onChange={(e) => setData("sso", e.target.value)}
+                                >
+                                    <option value="">Select SSO</option>
+                                    <option value="saml">SAML</option>
+                                    <option value="id">ID</option>
+                                </SelectInput>
+                                <InputError message={errors.sso} className="mt-2"/>
+                            </div>
+                             <div className="mt-4">
+                                <InputLabel
+                                    htmlFor="client_mfa"
+                                    value="Client MFA"
+                                    className="dark:text-gray-300"
+                                />
+                                <SelectInput
+                                    name="mfa"
+                                    id="client_mfa"
+                                    className="mt-1 block w-full dark:bg-gray-700 dark:text-gray-200"
+                                    onChange={(e) => setData("mfa", e.target.value)}
+                                >
+                                    <option value="">Select MFA</option>
+                                    <option value="email">EMAIL</option>
+                                    <option value="sms">SMS</option>
+                                </SelectInput>
+                                <InputError message={errors.mfa} className="mt-2"/>
                             </div>
                             <div className="mt-4">
                                 <InputLabel

@@ -83,7 +83,9 @@ export default function Index({ success, clients, role }) {
                                     "Category", 
                                     "Hosted On", 
                                     "Assigned User",
-                                    "Actions"
+                                    "SSO",
+                                    "MFA",
+                                    "Actions",
                                 ].map((header) => (
                                     <th
                                         key={header}
@@ -136,7 +138,8 @@ export default function Index({ success, clients, role }) {
                                                     <span className="text-gray-500">Unassigned</span>
                                                 )}
                                             </td>
-
+                                            <td className="py-4 px-6">{client.serverSpecs[0]?.sso || "N/A"}</td>
+                                            <td className="py-4 px-6">{client.serverSpecs[0]?.mfa || "N/A"}</td>
                                             <td className="py-4 px-6 text-nowrap">
                                                 {
                                                     role === 'admin' ? (
@@ -161,7 +164,7 @@ export default function Index({ success, clients, role }) {
                                         </tr>
                                         {openIndex === index && (
                                             <tr>
-                                                <td colSpan="11" className="bg-gray-50 dark:bg-gray-700 p-4">
+                                                <td colspan="13" className="bg-gray-50 dark:bg-gray-700 p-4">
                                                     <div className="text-gray-700 dark:text-gray-300">
                                                         <h4 className="font-semibold mb-2">
                                                             Server Specifications: {client.name}
@@ -179,6 +182,8 @@ export default function Index({ success, clients, role }) {
                                                                         <th className="py-2 px-4 text-xs font-medium text-gray-700 dark:text-gray-300">STORAGE</th>
                                                                         <th className="py-2 px-4 text-xs font-medium text-gray-700 dark:text-gray-300">CATEGORY</th>
                                                                         <th className="py-2 px-4 text-xs font-medium text-gray-700 dark:text-gray-300">HOSTED ON</th>
+                                                                        <th className="py-2 px-4 text-xs font-medium text-gray-700 dark:text-gray-300">SSO</th>
+                                                                        <th className="py-2 px-4 text-xs font-medium text-gray-700 dark:text-gray-300">MFA</th>
                                                                         <th className="py-2 px-4 text-xs font-medium text-gray-700 dark:text-gray-300">ACTION</th>
                                                                     </tr>
                                                                 </thead>
@@ -197,68 +202,71 @@ export default function Index({ success, clients, role }) {
                                                                             </td>
                                                                             <td className="py-2 px-4">{spec.cpu}</td>
                                                                             <td className="py-2 px-4">{spec.ram}</td>
-                                                                        <td className="py-2 px-4">{spec.private_ip}</td>
-                                                                        <td className="py-2 px-4">{spec.public_ip}</td>
-                                                                        <td className="py-2 px-4">{spec.os}</td>
-                                                                        <td className="py-2 px-4">{spec.storage}</td>
-                                                                        <td className="py-2 px-4">{spec.category}</td>
-                                                                        <td className="py-2 px-4">{spec.hosted_on}</td>
-                                                                        <td className="py-2 px-4 text-nowrap">
-                                                                            {
-                                                                                role === 'admin' ? (
-                                                                                    <>
+                                                                            <td className="py-2 px-4">{spec.private_ip}</td>
+                                                                            <td className="py-2 px-4">{spec.public_ip}</td>
+                                                                            <td className="py-2 px-4">{spec.os}</td>
+                                                                            <td className="py-2 px-4">{spec.storage}</td>
+                                                                            <td className="py-2 px-4">{spec.category}</td>
+                                                                            <td className="py-2 px-4">{spec.hosted_on}</td>
+                                                                            <td className="py-2 px-4">{spec.sso}</td>
+                                                                            <td className="py-2 px-4">{spec.mfa}</td>
+                                                                            <td className="py-2 px-4 text-nowrap">
+                                                                                {
+                                                                                    role === 'admin' ? (
+                                                                                        <>
+                                                                                            <Link
+                                                                                                href={route("serverSpecs.edit", { client: client.id, spec: spec.id })} // Ensure you pass both parameters correctly
+                                                                                                className="text-blue-600 dark:text-blue-400 hover:underline mx-1"
+                                                                                            >
+                                                                                                Edit
+                                                                                            </Link>
+                                                                                            <button
+                                                                                                onClick={() => deleteServerSpecs(spec)}
+                                                                                                className="text-red-600 dark:text-red-400 hover:underline"
+                                                                                            >
+                                                                                                Delete
+                                                                                            </button>
+                                                                                        </>
+                                                                                    ) : (
                                                                                         <Link
-                                                                                            href={route("serverSpecs.edit", { client: client.id, spec: spec.id })} // Ensure you pass both parameters correctly
-                                                                                            className="text-blue-600 dark:text-blue-400 hover:underline mx-1"
+                                                                                        href={route("serverSpecs.edit", { client: client.id, spec: spec.id })} // Ensure you pass both parameters correctly
+                                                                                        className="text-blue-600 dark:text-blue-400 hover:underline mx-1"
                                                                                         >
                                                                                             Edit
-                                                                                        </Link>
-                                                                                        <button
-                                                                                            onClick={() => deleteServerSpecs(spec)}
-                                                                                            className="text-red-600 dark:text-red-400 hover:underline"
-                                                                                        >
-                                                                                            Delete
-                                                                                        </button>
-                                                                                    </>
-                                                                                ) : (
-                                                                                    <Link
-                                                                                    href={route("serverSpecs.edit", { client: client.id, spec: spec.id })} // Ensure you pass both parameters correctly
-                                                                                    className="text-blue-600 dark:text-blue-400 hover:underline mx-1"
-                                                                                    >
-                                                                                        Edit
-                                                                                    </Link>   
-                                                                                )        
-                                                                            }
-                                                                        </td>
-                                                                    </tr>
-                                                                ))}
-                                                            </tbody>
-                                                        </table>
-                                                    ) : (
-                                                        <div>No server specifications found for this client.</div>
-                                                        )}
-                                                        <div className="mt-4">
-                                                            <Link
-                                                                href={route("serverSpecs.create", client.id)}
-                                                                className="bg-gray-100 dark:bg-gray-600 py-1 px-3 text-gray-800 dark:text-gray-300 rounded shadow transition-all hover:bg-gray-200 dark:hover:bg-gray-500"
-                                                            >
-                                                                Add Server Specifications
-                                                            </Link>
-                                                        </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    )}
-                                </React.Fragment>
-                            ))
-                        ) : (
-                            <tr>
-                                <td colSpan="11" className="py-4 px-6 text-center">No clients found.</td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
+                                                                                        </Link>   
+                                                                                    )        
+                                                                                }
+                                                                            </td>
+                                                                        </tr>
+                                                                    ))}
+                                                                </tbody>
+                                                            </table>
+                                                        ) : (
+                                                            <div>No server specifications found for this client.</div>
+                                                            )}
+                                                            <div className="mt-4">
+                                                                <Link
+                                                                    href={route("serverSpecs.create", client.id)}
+                                                                    className="bg-gray-100 dark:bg-gray-600 py-1 px-3 text-gray-800 dark:text-gray-300 rounded shadow transition-all hover:bg-gray-200 dark:hover:bg-gray-500"
+                                                                >
+                                                                    Add Server Specifications
+                                                                </Link>
+                                                            </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        )}
+                                    </React.Fragment>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan="13" className="py-4 px-6 text-center">No clients found.</td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
-)};
+    )
+};

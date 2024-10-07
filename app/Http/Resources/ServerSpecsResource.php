@@ -27,7 +27,9 @@ class ServerSpecsResource extends JsonResource
             'storage' => $this->storage,
             'client_id' => $this->client_id,
             'category' => $this->category,
-            'hosted_on' => $this->hosted_on
+            'hosted_on' => $this->hosted_on,
+            'sso' => $this->sso,
+            'mfa' => $this->mfa
         ];
     }
 }
