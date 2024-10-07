@@ -175,8 +175,9 @@ export default function Edit({ serverSpecs }) {
                                     onChange={(e) => setData("sso", e.target.value)}
                                 >
                                     <option value="">Select SSO</option>
-                                    <option value="saml">SAML</option>
-                                    <option value="id">ID</option>
+                                    <option value="samlV2.0">SAML V2.0</option>
+                                    <option value="openIdConnect">Open ID Connect</option>
+                                    <option value="OAuth">OAuth</option>
                                 </SelectInput>
                                 <InputError message={errors.sso} className="mt-2"/>
                             </div>
